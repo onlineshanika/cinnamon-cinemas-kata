@@ -4,7 +4,7 @@ public class Showtime {
 
     private String start_time;
     private String end_time;
-    private MovieTheater theater;
+    private Theater theater;
     private Movie movie;
 
 
@@ -24,11 +24,11 @@ public class Showtime {
         this.end_time = end_time;
     }
 
-    public MovieTheater getTheater() {
+    public Theater getTheater() {
         return theater;
     }
 
-    public void setTheater(MovieTheater theater) {
+    public void setTheater(Theater theater) {
         this.theater = theater;
     }
 

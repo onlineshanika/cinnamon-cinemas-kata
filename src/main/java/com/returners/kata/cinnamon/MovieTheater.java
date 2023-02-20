@@ -5,12 +5,22 @@ import java.util.List;
 
 public class MovieTheater {
 
+    private static MovieTheater movieTheater_instance = null;
+
     private String name;
     private List<Theater> theaters;
 
-    public MovieTheater(String name) {
-        this.name = name;
+    private MovieTheater() {
+        this.name = "";
         this.theaters = new ArrayList<Theater>();
+    }
+
+    public static MovieTheater getInstance()
+    {
+        if (movieTheater_instance == null)
+            movieTheater_instance = new MovieTheater();
+
+        return movieTheater_instance;
     }
 
     public String getName() {
@@ -75,6 +85,10 @@ public class MovieTheater {
              }
         }
         return true;
+    }
+
+    public void setName(String name) {
+        this.name = name;
     }
 }
 

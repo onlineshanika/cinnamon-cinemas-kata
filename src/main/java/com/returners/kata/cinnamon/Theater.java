@@ -78,6 +78,14 @@ public class Theater {
         }
         return false;
     }
+
+    public Seat getSeat(String seatNumber) {
+        if (seatNumber != null) {
+            return seats.get(seatNumber);
+
+        }
+        return null;
+    }
 }
 
 

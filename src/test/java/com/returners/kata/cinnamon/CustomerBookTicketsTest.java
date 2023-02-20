@@ -1,42 +1,24 @@
 package com.returners.kata.cinnamon;
 
+import com.returners.kata.cinnamon.util.Statuses;
 import org.junit.jupiter.api.BeforeAll;
 import org.junit.jupiter.api.Test;
 
+import java.util.List;
+
 import static org.junit.jupiter.api.Assertions.assertEquals;
 
-public class MovieTheaterTest {
+public class CustomerBookTicketsTest {
 
-    static MovieTheater movieTheater  ;
-    static Theater theater1  ;
+
+    static MovieTheater movieTheater;
+    static Theater theater1;
+
     @BeforeAll
     static void setup() {
         movieTheater =  MovieTheater.getInstance();
         movieTheater.setName("MovieTheater 1");
         theater1 = new Theater("Theater 3D");
-    }
-
-
-    @Test
-    public void createMovieTheater() {
-        assertEquals(Boolean.TRUE, movieTheater.addTheater(theater1));
-
-    }
-
-    @Test
-    public void createMovieTheaterDuplicateCheck() {
-
-         assertEquals(Boolean.FALSE, movieTheater.addTheater(theater1));
-
-        Theater theater2 = new Theater(" Theater 3D -2 ");
-         assertEquals(Boolean.TRUE, movieTheater.addTheater(theater2));
-
-    }
-
-
-    @Test
-    public void createShowTime() {
-
         if (movieTheater.addTheater(theater1)) {
             Movie movie1 = new Movie("Ant-Man and the Wasp", " Adventure/Action ", 3,
                     125, "Ant-Man and the Wasp find themselves exploring the Quantum Realm," +
@@ -57,29 +39,41 @@ public class MovieTheaterTest {
             showtime2.setEnd_time("18:00");
             theater1.addShowTimes(showtime2);
 
+            theater1.createSeats(5, 'C');
 
-            Movie movie2 = new Movie("Ant-Man and the Wasp");
-
-            assertEquals(2,theater1.getShowtimes(movie2).size());
         }
 
     }
 
-
     @Test
-    public void createSeats() {
-        theater1.createSeats(5,'C');
-        assertEquals(15,theater1.getSeats().size());
+    public void bookingSingleTicketTest() {
+        Customer customer = new Customer();
+
+        String movie = "Ant-Man and the Wasp";
+        String showTime = "14:00";
+        String theater = "Theater 3D";
+        String[] seats = {"A#3"};
+
+        assertEquals(Boolean.TRUE,theater1.isSeatAvailable("A#3"));
+
+        customer.bookSeats(movie,showTime,theater,seats);
+        assertEquals(Boolean.FALSE,theater1.isSeatAvailable("A#3"));
     }
 
 
     @Test
-    public void checkSeatAvailability() {
+    public void bookingMultipleTicketTest() {
+        Customer customer = new Customer();
 
-        theater1.createSeats(5,'C');
-        assertEquals(Boolean.TRUE,theater1.isSeatAvailable("B#4"));
-        assertEquals(Boolean.FALSE,theater1.isSeatAvailable("T#4"));
+        String movie = "Ant-Man and the Wasp";
+        String showTime = "14:00";
+        String theater = "Theater 3D";
+        String[] seats = {"B#1","B#2","B#3","B#4"};
+
+        assertEquals(Boolean.TRUE,theater1.isSeatAvailable("B#3"));
+
+        customer.bookSeats(movie,showTime,theater,seats);
+        assertEquals(Boolean.FALSE,theater1.isSeatAvailable("B#4"));
+        assertEquals(Boolean.FALSE,theater1.isSeatAvailable("B#2"));
     }
-
-
 }
