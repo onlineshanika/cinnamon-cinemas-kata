@@ -1,11 +1,8 @@
 package com.returners.kata.cinnamon;
 
 import com.returners.kata.cinnamon.util.PaymentMethod;
-import com.returners.kata.cinnamon.util.Statuses;
 import org.junit.jupiter.api.BeforeAll;
 import org.junit.jupiter.api.Test;
-
-import java.util.List;
 
 import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertNotNull;
@@ -14,13 +11,13 @@ public class CustomerBookTicketsTest {
 
 
     static MovieTheater movieTheater;
-    static Theater theater1;
+    static Theatre theater1;
 
     @BeforeAll
     static void setup() {
         movieTheater = MovieTheater.getInstance();
         movieTheater.setName("MovieTheater 1");
-        theater1 = new Theater("Theater 3D");
+        theater1 = new Theatre("Theater 3D");
         if (movieTheater.addTheater(theater1)) {
             Movie movie1 = new Movie("Ant-Man and the Wasp", " Adventure/Action ", 3,
                     125, "Ant-Man and the Wasp find themselves exploring the Quantum Realm," +

@@ -8,12 +8,12 @@ import static org.junit.jupiter.api.Assertions.assertEquals;
 public class MovieTheaterTest {
 
     static MovieTheater movieTheater  ;
-    static Theater theater1  ;
+    static Theatre theater1  ;
     @BeforeAll
     static void setup() {
         movieTheater =  MovieTheater.getInstance();
         movieTheater.setName("MovieTheater 1");
-        theater1 = new Theater("Theater 3D");
+        theater1 = new Theatre("Theater 3D");
     }
 
 
@@ -28,7 +28,7 @@ public class MovieTheaterTest {
 
          assertEquals(Boolean.FALSE, movieTheater.addTheater(theater1));
 
-        Theater theater2 = new Theater(" Theater 3D -2 ");
+        Theatre theater2 = new Theatre(" Theater 3D -2 ");
          assertEquals(Boolean.TRUE, movieTheater.addTheater(theater2));
 
     }

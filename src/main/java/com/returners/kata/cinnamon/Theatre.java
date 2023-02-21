@@ -8,12 +8,12 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
-public class Theater {
+public class Theatre {
     private String name;
     private Map<String, Seat> seats;
     private List<Showtime> showtimes;
 
-    public Theater(String name) {
+    public Theatre(String name) {
         this.name = name;
         this.seats = new HashMap<>();
         this.showtimes = new ArrayList<>();
