@@ -1,5 +1,6 @@
 package com.returners.kata.cinnamon;
 
+import com.returners.kata.cinnamon.util.Constants;
 import com.returners.kata.cinnamon.util.Statuses;
 
 import java.util.ArrayList;
@@ -65,7 +66,7 @@ public class Theater {
         char c;
         for (int i = 1; i <= noOfRows; i++) {
             for (c = 'A'; c <= noOfCols; ++c)
-                this.seats.put(c + "#" + i, new Seat(c, i, Statuses.AVAILABLE));
+                this.seats.put(c + "#" + i, new Seat(c, i, Statuses.AVAILABLE, Constants.SEAT_PRICE));
         }
     }
 
@@ -85,6 +86,17 @@ public class Theater {
 
         }
         return null;
+    }
+
+
+    public List<Seat> getAllAvailableSeats() {
+        List<Seat> availableSeats = new ArrayList<>();
+        for (Map.Entry<String, Seat> entry : seats.entrySet()) {
+            if (entry.getValue().getStatus() == Statuses.AVAILABLE) {
+                availableSeats.add(entry.getValue());
+            }
+        }
+        return availableSeats;
     }
 }
 

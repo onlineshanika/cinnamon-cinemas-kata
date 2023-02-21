@@ -6,10 +6,22 @@ public class Seat {
     private int number;
     private int status;
 
-    public Seat(char row, int number, int status) {
+    private double seatPrice;
+
+
+    public Seat(char row, int number, int status, double seatPrice) {
         this.row = row;
         this.number = number;
         this.status = status;
+        this.seatPrice = seatPrice;
+    }
+
+    public double getSeatPrice() {
+        return seatPrice;
+    }
+
+    public void setSeatPrice(double seatPrice) {
+        this.seatPrice = seatPrice;
     }
 
     public char getRow() {
