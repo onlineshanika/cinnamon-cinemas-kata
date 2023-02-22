@@ -61,18 +61,21 @@ public class Theatre {
     }
 
 
-    public void createSeats(int noOfRows, char noOfCols) {
-        this.seats = new HashMap<>();
+    public void createSeats(int noOfRows, char noOfCols,String showtime) {
+        if(this.seats == null){
+            this.seats = new HashMap<>();
+        }
+
         char c;
         for (int i = 1; i <= noOfRows; i++) {
             for (c = 'A'; c <= noOfCols; ++c)
-                this.seats.put(c + "#" + i, new Seat(c, i, Statuses.AVAILABLE, Constants.SEAT_PRICE));
+                this.seats.put(c + "#" + i+"#"+showtime, new Seat(c, i, Statuses.AVAILABLE, Constants.SEAT_PRICE));
         }
     }
 
-    public boolean isSeatAvailable(String seatNumber) {
+    public boolean isSeatAvailable(String seatNumber,String showtime) {
         if (seatNumber != null) {
-            Seat seat = seats.get(seatNumber);
+            Seat seat = seats.get(seatNumber+"#"+showtime);
             if (seat != null) {
                 return seat.getStatus() == Statuses.AVAILABLE;
             }
@@ -80,9 +83,9 @@ public class Theatre {
         return false;
     }
 
-    public Seat getSeat(String seatNumber) {
-        if (seatNumber != null) {
-            return seats.get(seatNumber);
+    public Seat getSeat(String seatNumber ,String showtime) {
+        if (seatNumber != null && showtime != null) {
+            return this.seats.get(seatNumber+"#"+showtime);
 
         }
         return null;
@@ -93,6 +96,18 @@ public class Theatre {
         List<Seat> availableSeats = new ArrayList<>();
         for (Map.Entry<String, Seat> entry : seats.entrySet()) {
             if (entry.getValue().getStatus() == Statuses.AVAILABLE) {
+                availableSeats.add(entry.getValue());
+            }
+        }
+        return availableSeats;
+    }
+
+
+    public List<Seat> getAllAvailableSeatsByShowtime(String showtime) {
+        List<Seat> availableSeats = new ArrayList<>();
+        for (Map.Entry<String, Seat> entry : seats.entrySet()) {
+            String key = entry.getKey().split("#")[2];
+            if (entry.getValue().getStatus() == Statuses.AVAILABLE && key.equalsIgnoreCase(showtime))  {
                 availableSeats.add(entry.getValue());
             }
         }

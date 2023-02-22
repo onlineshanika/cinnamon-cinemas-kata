@@ -45,14 +45,14 @@ public class MovieTheaterTest {
 
             Showtime showtime = new Showtime();
             showtime.setMovie(movie1);
-            showtime.setTheater(theater1);
+//            showtime.setTheater(theater1);
             showtime.setStart_time("14:00");
             showtime.setEnd_time("16:00");
             theater1.addShowTimes(showtime);
 
             Showtime showtime2 = new Showtime();
             showtime2.setMovie(movie1);
-            showtime2.setTheater(theater1);
+//            showtime2.setTheater(theater1);
             showtime2.setStart_time("16:00");
             showtime2.setEnd_time("18:00");
             theater1.addShowTimes(showtime2);
@@ -68,7 +68,7 @@ public class MovieTheaterTest {
 
     @Test
     public void createSeats() {
-        theater1.createSeats(5,'C');
+        theater1.createSeats(5,'C',"10:00");
         assertEquals(15,theater1.getSeats().size());
     }
 
@@ -76,9 +76,9 @@ public class MovieTheaterTest {
     @Test
     public void checkSeatAvailability() {
 
-        theater1.createSeats(5,'C');
-        assertEquals(Boolean.TRUE,theater1.isSeatAvailable("B#4"));
-        assertEquals(Boolean.FALSE,theater1.isSeatAvailable("T#4"));
+        theater1.createSeats(5,'C',"10:00");
+        assertEquals(Boolean.TRUE,theater1.isSeatAvailable("B#4","10:00"));
+        assertEquals(Boolean.FALSE,theater1.isSeatAvailable("T#4","10:00"));
     }
 
 

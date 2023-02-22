@@ -23,18 +23,19 @@ public class Customer extends User {
 
     }
 
-    public Booking bookSeats(String movie, String showTime, String theater, String[] seats) {
+    public Booking bookSeats(String movie, String showTimeStr, String theater, String[] seats) {
         List<Seat>  seatList = new ArrayList<>();
         List<Showtime> showtimes = MovieTheater.getInstance().getShowtimes(new Movie(movie));
-        Showtime showtimeOBJ = null;
+        Showtime showtime = null;
         for (Showtime show : showtimes) {
-            if (show.getTheater().getName().equalsIgnoreCase(theater) && show.getStart_time().equalsIgnoreCase(showTime)) {
-                showtimeOBJ = show;
+            if (show.getStart_time().equalsIgnoreCase(showTimeStr)) {
+                showtime = show;
                 break;
             }
         }
+        Theatre theatre =  MovieTheater.getInstance().getTheaterByName(theater) ;
         for (String requestedSeat : seats) {
-            Seat seat = showtimeOBJ.getTheater().getSeat(requestedSeat);
+            Seat seat = theatre.getSeat(requestedSeat,showTimeStr);
             seat.setStatus(Statuses.RESERVED);
             seatList.add(seat);
         }
@@ -42,18 +43,9 @@ public class Customer extends User {
         if(reservedSeatsMap == null){
             reservedSeatsMap = new HashMap<>();
         }
-        reservedSeatsMap.put(movie+"#"+showTime+"#"+theater,seatList);
-        return new Booking(showtimeOBJ.getMovie(),showtimeOBJ,seatList,new Customer());
+        reservedSeatsMap.put(movie+"#"+showTimeStr+"#"+theater,seatList);
+        return new Booking(showtime.getMovie(),showtime,seatList,new Customer());
 
     }
 
-    public void bookSeats(String movie, String[] seats) {
-
-    }
-
-    public void purchaseTickets(Booking booking) {
-
-        //calculate total
-
-    }
 }

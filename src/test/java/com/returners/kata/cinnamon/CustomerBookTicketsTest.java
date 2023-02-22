@@ -26,19 +26,21 @@ public class CustomerBookTicketsTest {
 
             Showtime showtime = new Showtime();
             showtime.setMovie(movie1);
-            showtime.setTheater(theater1);
+//            showtime.setTheater(theater1);
             showtime.setStart_time("14:00");
             showtime.setEnd_time("16:00");
             theater1.addShowTimes(showtime);
 
+            theater1.createSeats(5, 'C',"14:00");
+
             Showtime showtime2 = new Showtime();
             showtime2.setMovie(movie1);
-            showtime2.setTheater(theater1);
+//            showtime2.setTheater(theater1);
             showtime2.setStart_time("16:00");
             showtime2.setEnd_time("18:00");
             theater1.addShowTimes(showtime2);
 
-            theater1.createSeats(5, 'C');
+            theater1.createSeats(5, 'C',"16:00");
 
         }
 
@@ -53,10 +55,10 @@ public class CustomerBookTicketsTest {
         String theater = "Theater 3D";
         String[] seats = {"A#3"};
 
-        assertEquals(Boolean.TRUE, theater1.isSeatAvailable("A#3"));
+        assertEquals(Boolean.TRUE, theater1.isSeatAvailable("A#3",showTime));
 
         customer.bookSeats(movie, showTime, theater, seats);
-        assertEquals(Boolean.FALSE, theater1.isSeatAvailable("A#3"));
+        assertEquals(Boolean.FALSE, theater1.isSeatAvailable("A#3",showTime));
     }
 
 
@@ -69,11 +71,11 @@ public class CustomerBookTicketsTest {
         String theater = "Theater 3D";
         String[] seats = {"B#1", "B#2", "B#3", "B#4"};
 
-        assertEquals(Boolean.TRUE, theater1.isSeatAvailable("B#3"));
+        assertEquals(Boolean.TRUE, theater1.isSeatAvailable("B#3",showTime));
 
         customer.bookSeats(movie, showTime, theater, seats);
-        assertEquals(Boolean.FALSE, theater1.isSeatAvailable("B#4"));
-        assertEquals(Boolean.FALSE, theater1.isSeatAvailable("B#2"));
+        assertEquals(Boolean.FALSE, theater1.isSeatAvailable("B#4",showTime));
+        assertEquals(Boolean.FALSE, theater1.isSeatAvailable("B#2",showTime));
     }
 
 
