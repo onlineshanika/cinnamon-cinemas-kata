@@ -3,18 +3,59 @@ package com.returners.kata.cinnamon.main;
 import com.returners.kata.cinnamon.*;
 import com.returners.kata.cinnamon.util.PaymentMethod;
 
+import java.io.File;
+import java.io.FileNotFoundException;
+import java.util.ArrayList;
 import java.util.List;
 import java.util.Scanner;
 
-public class Cinema {
+public class CinemaBulkReservation {
 
-    static boolean needMoreSeats = true;
+
+    private static final String COMMA_DELIMITER = ",";
+    public static final String CSV_FILE = "src/main/resources/reservation.csv";
+    static MovieTheater movieTheater = null;
 
     public static void main(String[] args) {
 
+        try {
+            masterdataSetup();
+            List<List<String>> records = readFile();
+            System.out.println(records.size());
+            createReservation( records);
+
+        } catch (FileNotFoundException e) {
+            throw new RuntimeException(e);
+        }
+    }
+
+
+    private static List<List<String>> readFile() throws FileNotFoundException {
+        List<List<String>> records = new ArrayList<>();
+        try (Scanner scanner = new Scanner(new File(CSV_FILE));) {
+            while (scanner.hasNextLine()) {
+                records.add(getRecordFromLine(scanner.nextLine()));
+            }
+        }
+        return records;
+    }
+
+    private static List<String> getRecordFromLine(String line) {
+        List<String> values = new ArrayList<String>();
+        try (Scanner rowScanner = new Scanner(line)) {
+            rowScanner.useDelimiter(COMMA_DELIMITER);
+            while (rowScanner.hasNext()) {
+                values.add(rowScanner.next());
+            }
+        }
+        return values;
+    }
+
+
+    private static void masterdataSetup() {
         // setting up masterdata
         //Create MovieTheater
-        MovieTheater movieTheater = MovieTheater.getInstance();
+        movieTheater = MovieTheater.getInstance();
         movieTheater.setName("Empire Cinemas - Bishops Stortford");
 
         //Create Theatre
@@ -91,94 +132,27 @@ public class Cinema {
         // create seats
         cinemaCity.createSeats(5, 'D');
         odeon.createSeats(5, 'C');
-
-
-//----------------------------------------------------------------------------------------------------------------------
-
-        Scanner scanner = new Scanner(System.in);
-
-        do {
-            reserveTickets(scanner);
-        } while (needMoreSeats);
-
-
-        scanner.close();
-    }
-
-    private static void reserveTickets(Scanner scanner) {
-        String theaterName = selectTheatres(scanner);
-        String movie = selectMovie(scanner, theaterName);
-        String showTime = selectShowtime(scanner, theaterName, movie);
-        String seatStr = selectSeats(scanner, theaterName, movie, showTime);
-
-
-        String[] seats = seatStr.split(" ");
-
-//        Theatre theatre = MovieTheater.getInstance().getTheaterByName(theaterName);
-
-
-        Customer customer = new Customer();
-        Booking booking = customer.bookSeats(movie, showTime, theaterName, seats);
-
-        Payment payment = new Payment();
-        Payment payment1 = payment.makePayment(booking, PaymentMethod.CARD);
-
-        TransactionManager txnManager = new TransactionManager();
-        System.out.println(txnManager.getTransactions(payment1.getTransaction().getTransactionId()).getTransactionId());
-
-
-        System.out.print(" Do you need more seats (Y/N)?");
-        String moreSeats = scanner.nextLine();
-        needMoreSeats = moreSeats.equalsIgnoreCase("Y");
-
     }
 
 
-    private static String selectTheatres(Scanner scanner) {
-        MovieTheater movieTheater = MovieTheater.getInstance();
-        List<Theatre> theatres = movieTheater.getTheaters();
+    private static void createReservation(List<List<String>> records) {
+        for (List<String> record : records) {
 
-        System.out.println("Select a theatre from the list and enter theatre name : ");
-        for (Theatre t : theatres) {
-            System.out.println(t.getName());
+            String theaterName =record.get(0).trim();
+            String movie = record.get(1).trim();
+            String showTime = record.get(2).trim();
+
+            String[] seats = record.get(3).split(" ");
+            Customer customer = new Customer();
+            Booking booking = customer.bookSeats(movie, showTime, theaterName, seats);
+
+            Payment payment = new Payment();
+            Payment payment1 = payment.makePayment(booking, PaymentMethod.CARD);
+
+            TransactionManager txnManager = new TransactionManager();
+            System.out.println(txnManager.getTransactions(payment1.getTransaction().getTransactionId()).getTransactionId());
+
+
         }
-        return scanner.nextLine();
     }
-
-    private static String selectMovie(Scanner scanner, String theatre) {
-        MovieTheater movieTheater = MovieTheater.getInstance();
-        List<Movie> movies = movieTheater.getMoviesForGivenTheatre(theatre);
-
-        System.out.println("Select a movie from the list and enter movie name : ");
-        for (Movie m : movies) {
-            System.out.println(m.getTitle());
-        }
-        return scanner.nextLine();
-    }
-
-
-    private static String selectShowtime(Scanner scanner, String theatre, String movie) {
-        MovieTheater movieTheater = MovieTheater.getInstance();
-        List<Showtime> showtimes = movieTheater.getShowtimes(theatre, movie);
-
-        System.out.println("Select a show time from the list and enter time : ");
-        for (Showtime time : showtimes) {
-            System.out.println(time.getStart_time());
-        }
-        return scanner.nextLine();
-    }
-
-
-    private static String selectSeats(Scanner scanner, String theatreName, String movie, String showtime) {
-        MovieTheater movieTheater = MovieTheater.getInstance();
-        Theatre theatre = movieTheater.getTheaterByName(theatreName);
-        System.out.println("Showing all available seats ");
-        for (Seat seat : theatre.getAllAvailableSeats()) {
-            System.out.print(seat.getRow() + "#" + seat.getNumber() + "  ");
-        }
-        System.out.print("\n Select seats (if you need multiple seats please separate them with a space ): ");
-
-        return scanner.nextLine();
-    }
-
 }
