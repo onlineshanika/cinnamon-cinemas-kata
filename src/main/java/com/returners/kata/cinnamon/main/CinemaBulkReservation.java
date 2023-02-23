@@ -62,8 +62,6 @@ public class CinemaBulkReservation {
         Theatre cinemaCity = new Theatre("Cinema City");
         Theatre odeon = new Theatre("Odeon");
 
-        movieTheater.addTheater(odeon);
-
         //Create Movies
         Movie movie1 = new Movie("Ant-Man and the Wasp", " Adventure/Action ", 3,
                 125, "Ant-Man and the Wasp find themselves exploring the Quantum Realm," +
@@ -81,72 +79,33 @@ public class CinemaBulkReservation {
 
         // create showtimes and add movies
         if (movieTheater.addTheater(cinemaCity)) {
-
-            Showtime showtime = new Showtime();
-            showtime.setMovie(movie1);
-//            showtime.setTheater(cinemaCity);
-            showtime.setStart_time("14:00");
-            showtime.setEnd_time("16:00");
-            cinemaCity.addShowTimes(showtime);
-            cinemaCity.createSeats(5, 'D',"14:00");
-
-
-            Showtime showtime2 = new Showtime();
-            showtime2.setMovie(movie1);
-//            showtime2.setTheater(cinemaCity);
-            showtime2.setStart_time("16:00");
-            showtime2.setEnd_time("18:00");
-            cinemaCity.addShowTimes(showtime2);
-            cinemaCity.createSeats(5, 'D',"10:00");
-
-
-            Showtime showtime3 = new Showtime();
-            showtime3.setMovie(movie2);
-//            showtime3.setTheater(cinemaCity);
-            showtime3.setStart_time("10:00");
-            showtime3.setEnd_time("13:00");
-            cinemaCity.addShowTimes(showtime3);
-
-            cinemaCity.createSeats(5, 'D',"10:00");
+            createShowTime(movie1,"14:00","16:00",cinemaCity);
+            createShowTime(movie1,"16:00","18:00",cinemaCity);
+            createShowTime(movie1,"16:00","18:00",cinemaCity);
+            createShowTime(movie2,"10:00","13:00",cinemaCity);
 
         }
 
         if (movieTheater.addTheater(odeon)) {
-
-            Showtime showtime = new Showtime();
-            showtime.setMovie(movie1);
-//            showtime.setTheater(odeon);
-            showtime.setStart_time("14:00");
-            showtime.setEnd_time("16:00");
-            odeon.addShowTimes(showtime);
-
-            odeon.createSeats(5, 'C',"14:00");
-
-            Showtime showtime2 = new Showtime();
-            showtime2.setMovie(movie1);
-//            showtime2.setTheater(odeon);
-            showtime2.setStart_time("16:00");
-            showtime2.setEnd_time("18:00");
-            odeon.addShowTimes(showtime2);
-
-            odeon.createSeats(5, 'C',"16:00");
-
-
-            Showtime showtime3 = new Showtime();
-            showtime3.setMovie(movie2);
-//            showtime3.setTheater(odeon);
-            showtime3.setStart_time("10:00");
-            showtime3.setEnd_time("13:00");
-            odeon.addShowTimes(showtime3);
-
-            odeon.createSeats(5, 'C',"10:00");
-
+            createShowTime(movie1,"14:00","16:00",odeon);
+            createShowTime(movie1,"16:00","18:00",odeon);
+            createShowTime(movie2,"10:00","13:00",odeon);
         }
 
         // create seats
 
     }
 
+
+    private static void createShowTime(Movie movie,String startTime,String endTime,Theatre theatre){
+        Showtime showtime = new Showtime();
+        showtime.setMovie(movie);
+        showtime.setStart_time(startTime);
+        showtime.setEnd_time(endTime);
+        theatre.addShowTimes(showtime);
+        theatre.createSeats(5, 'C',startTime);
+
+    }
 
     private static void createReservation(List<List<String>> records) {
         for (List<String> record : records) {
@@ -163,7 +122,7 @@ public class CinemaBulkReservation {
             Payment payment1 = payment.makePayment(booking, PaymentMethod.CARD);
 
             TransactionManager txnManager = new TransactionManager();
-            System.out.println(txnManager.getTransactions(payment1.getTransaction().getTransactionId()).getTransactionId());
+            System.out.println(" Transaction Id : " +txnManager.getTransactions(payment1.getTransaction().getTransactionId()).getTransactionId() +" no of seats allocated " +seats.length);
 
         }
     }

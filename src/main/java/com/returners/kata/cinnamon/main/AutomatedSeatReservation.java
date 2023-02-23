@@ -21,6 +21,8 @@ public class AutomatedSeatReservation {
         System.out.println("------ Starting the automation ------");
         masterdataCreation();
         automatedSeatAllocation();
+
+        System.out.println("------ end the automation ------");
     }
 
 
