@@ -46,6 +46,6 @@ public class TransactionManager {
     }
 
     private String generateTransactionID(){
-        return Utilities.randomIdGenerator();
+        return "TXN-"+Utilities.randomIdGenerator();
     }
 }

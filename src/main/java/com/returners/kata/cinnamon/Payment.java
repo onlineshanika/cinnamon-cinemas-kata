@@ -78,7 +78,7 @@ public class Payment {
     }
 
     private String generatePaymentID(){
-        return Utilities.randomIdGenerator();
+        return "PAY-"+Utilities.randomIdGenerator();
     }
 }
 
