@@ -89,32 +89,33 @@ public class Cinema {
         List<Theatre> theatres = movieTheater.getTheaters();
 
         System.out.println("Select a theatre from the list and enter theatre name : ");
-        for (Theatre t : theatres) {
-            System.out.println(t.getName());
-        }
+        movieTheater.getTheaters().forEach( (theatre) -> {
+            System.out.println(theatre.getName());
+        });
+
         return scanner.nextLine();
     }
 
     private static String selectMovie(Scanner scanner, String theatre) {
         MovieTheater movieTheater = MovieTheater.getInstance();
-        List<Movie> movies = movieTheater.getMoviesForGivenTheatre(theatre);
 
         System.out.println("Select a movie from the list and enter movie name : ");
-        for (Movie m : movies) {
-            System.out.println(m.getTitle());
-        }
+        movieTheater.getMoviesForGivenTheatre(theatre).forEach( (movie) -> {
+            System.out.println(movie.getTitle());
+        });
+
         return scanner.nextLine();
     }
 
 
     private static String selectShowtime(Scanner scanner, String theatre, String movie) {
         MovieTheater movieTheater = MovieTheater.getInstance();
-        List<Showtime> showtimes = movieTheater.getShowtimes(theatre, movie);
 
         System.out.println("Select a show time from the list and enter time : ");
-        for (Showtime time : showtimes) {
+        movieTheater.getShowtimes(theatre, movie).forEach( (time) -> {
             System.out.println(time.getStart_time());
-        }
+        });
+
         return scanner.nextLine();
     }
 
@@ -123,9 +124,11 @@ public class Cinema {
         MovieTheater movieTheater = MovieTheater.getInstance();
         Theatre theatre = movieTheater.getTheaterByName(theatreName);
         System.out.println("Showing all available seats ");
-        for (Seat seat : theatre.getAllAvailableSeatsByShowtime(showtime)) {
+
+        theatre.getAllAvailableSeatsByShowtime(showtime).forEach( (seat) -> {
             System.out.print(seat.getRow() + "#" + seat.getNumber() + "  ");
-        }
+        });
+
         System.out.print("\n Select seats (if you need multiple seats please separate them with a space ): ");
 
         return scanner.nextLine();
